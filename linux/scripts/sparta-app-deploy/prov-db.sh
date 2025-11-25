@@ -46,8 +46,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
 echo Done!
 echo
 
-# configure bind IP automate with sed command
-
+# Configure bind IP to 0.0.0.0 for remote access
+sudo sed -i 's/^  bindIp: .*$/  bindIp: 0.0.0.0/' /etc/mongod.conf
 
 echo Start mongodb
 sudo systemctl start mongod

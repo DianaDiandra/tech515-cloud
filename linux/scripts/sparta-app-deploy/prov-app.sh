@@ -7,25 +7,26 @@
 # works on: fresh VM and if run multiple times
 
 echo Update sources list...
-sudo apt update
+sudo apt update -y
 echo Done!
 echo
 
-echo Upgrade...
+echo Upgrade packages...
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 echo Done!
 echo
 
-# install nginx - will later be used as a reverse proxy
+# install nginx...
 echo  Install nginx...
 sudo DEBIAN_FRONTEND=noninteractive apt install nginx -y
 echo Done!
 echo
 
-# configure reverse proxy here
+
 echo Configuring reverse proxy...
-sudo sed -i 's@try_files \$uri \$uri/ =404;@proxy_pass http://localhost:3000;\
-        include /etc/nginx/proxy_params;@' /etc/nginx/sites-available/default
+sudo grep -q "proxy_pass http://localhost:3000;" /etc/nginx/sites-available/default \
+|| sudo sed -i 's@try_files \$uri \$uri/ =404;@proxy_pass http://localhost:3000;\
+include /etc/nginx/proxy_params;@' /etc/nginx/sites-available/default
 echo Done!
 echo
 
@@ -38,7 +39,7 @@ echo
 # nginx is already enabled by default
 # sudo systemctl enable nginx
 
-echo Setup for install of Node JS 20...
+echo Setup Node.js 20...
 curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
 # ensure that it does not require user input
 sudo DEBIAN_FRONTEND=noninteractive bash nodesource_setup.sh
@@ -51,17 +52,18 @@ sudo DEBIAN_FRONTEND=noninteractive apt install nodejs -y
 echo Done!
 echo
 
+# App directory
+APP_DIR=~/tech515-sparta-app/nodejs20-sparta-test-app/app
 
-# Clone the app repo
-git clone https://github.com/DianaDiandra/tech515-sparta-app.git
+echo "Clone or update Sparta app repo..."
+git clone https://github.com/DianaDiandra/tech515-sparta-app.git ~/tech515-sparta-app 2>/dev/null \
+|| (cd ~/tech515-sparta-app && git pull)
+cd $APP_DIR
 
-# cd into the app folder
-cd ~/tech515-sparta-app/nodejs20-sparta-test-app/app
-
-# uncomment next line of you want app to connect to the database
+# Optional: uncomment next line of you want app to connect to a database
 export DB_HOST=mongodb://172.31.25.58:27017/posts
 
-echo Run npm install
+echo Install npm dependencies
 npm install
 echo Done!
 echo
@@ -73,6 +75,7 @@ echo Run app...
 echo Installing pm2
 sudo npm install -g pm2
 echo Starting app using pm2
+pm2 start app.js --name "sparta-app" --update-env
 pm2 save
 pm2 startup systemd -u $USER --hp $HOME
 echo

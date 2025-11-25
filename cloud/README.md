@@ -4,7 +4,7 @@
   - [Questions we have](#questions-we-have)
   - [What is cloud computing?](#what-is-cloud-computing)
     - on-demand delivery of computing power, storage, applications or other IT resources
-    - Usually has pau-as-you-go pricing
+    - Usually has pay-as-you-go pricing
     - You can access many resources, almsot instantly
     - Cloud provider usually own and maintain the network & hardware
     ### How do we know if something is in the cloud?

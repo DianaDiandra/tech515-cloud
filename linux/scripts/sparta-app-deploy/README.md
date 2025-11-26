@@ -16,7 +16,7 @@
 ### What is a reverse proxy?
 
 * A server which sits in front of one or more backend servers
-* It intercepts client requests and redirects as needed (forwarding he request to the appropiate backend server)
+* It intercepts client requests and redirects as needed (forwarding the request to the appropiate backend server)
 * Return the response to the client as if the proxy server itself had fulfilled request
 
 What is acting as the reverse proxy?
@@ -24,7 +24,7 @@ What is acting as the reverse proxy?
 
 Main reason we are using it?
 * User experience - URL rewritting so removes the need to put port 3000 in the URL
-* Simplify atoscaling later
+* Simplify autoscaling later
 
 Some tipical Benefits:
 * security

@@ -1,84 +1,87 @@
 #!/bin/bash
 
-# purpose: provision software + configuration to run Sparta Node JS test app
-# tested by: Diana
-# tested when:
-# works on: AWS EC2 instance running on Ubuntu 22.04 LTS
-# works on: fresh VM and if run multiple times
+# Purpose: Provision software + configuration to run Sparta Node JS test app
+# Tested by: Diana
+# Works on: AWS EC2 instance running Ubuntu 22.04 LTS
+# Works on fresh VM and if run multiple times
 
-echo Update sources list...
+
+echo "Update sources list..."
 sudo apt update -y
-echo Done!
+echo "Done!"
 echo
 
-echo Upgrade packages...
+echo "Upgrade packages..."
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
-echo Done!
+echo "Done!"
 echo
 
-# install nginx...
-echo  Install nginx...
+# Install nginx
+echo "Install nginx..."
 sudo DEBIAN_FRONTEND=noninteractive apt install nginx -y
-echo Done!
+echo "Done!"
 echo
 
-
-echo Configuring reverse proxy...
+# Configure reverse proxy
+echo "Configuring reverse proxy..."
 sudo grep -q "proxy_pass http://localhost:3000;" /etc/nginx/sites-available/default \
 || sudo sed -i 's@try_files \$uri \$uri/ =404;@proxy_pass http://localhost:3000;\
 include /etc/nginx/proxy_params;@' /etc/nginx/sites-available/default
-echo Done!
+echo "Done!"
 echo
 
-
-echo Apply changes to Nginx config...
+# Apply Nginx changes
+echo "Restart Nginx..."
 sudo systemctl restart nginx
-echo Done!
+echo "Done!"
 echo
 
-# nginx is already enabled by default
-# sudo systemctl enable nginx
-
-echo Setup Node.js 20...
+# Setup Node.js 20
+echo "Setup Node.js 20..."
 curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
-# ensure that it does not require user input
 sudo DEBIAN_FRONTEND=noninteractive bash nodesource_setup.sh
-echo Done!
+echo "Done!"
 echo
 
-echo Install Node JS 20...
-# TEST TO MAKE SURE NO USER INPUT
+echo "Install Node.js 20..."
 sudo DEBIAN_FRONTEND=noninteractive apt install nodejs -y
-echo Done!
+echo "Done!"
 echo
 
-# App directory
+# Set environment variable for your DB
+export DB_HOST=mongodb://172.31.50.48:27017/posts
+
+# Remove old repo and clone fresh copy
+echo "Remove old repo (if exists) and clone fresh copy..."
+rm -rf ~/tech515-sparta-app
+git clone https://github.com/DianaDiandra/tech515-sparta-app.git ~/tech515-sparta-app
+echo "Done!"
+echo
+
+# Move to app directory
 APP_DIR=~/tech515-sparta-app/nodejs20-sparta-test-app/app
-
-echo "Clone or update Sparta app repo..."
-git clone https://github.com/DianaDiandra/tech515-sparta-app.git ~/tech515-sparta-app 2>/dev/null \
-|| (cd ~/tech515-sparta-app && git pull)
 cd $APP_DIR
-
-# Optional: uncomment next line of you want app to connect to a database
-export DB_HOST=mongodb://172.31.25.58:27017/posts
-
-echo Install npm dependencies
-npm install
-echo Done!
+echo "Moved to $APP_DIR"
 echo
 
-echo Run app...
-# NEEDS FIXING BECAUSE IT ENGAGES THE TERMINAL
-# FIX BY RUNNING IN THE BACKGROUND
-# npm start OR node app.js
-echo Installing pm2
+# Install npm dependencies (runs seed.js via postinstall)
+echo "Install npm dependencies..."
+npm install
+echo "Done!"
+echo
+
+# Run app in background using PM2
+echo "Installing PM2..."
 sudo npm install -g pm2
-echo Starting app using pm2
+echo "Starting app using PM2..."
 pm2 start app.js --name "sparta-app" --update-env
 pm2 save
 pm2 startup systemd -u $USER --hp $HOME
 echo
-echo Done!
-echo PM2 processes:
+echo "Done!"
+
+# Show PM2 processes and port in use
+echo "PM2 processes:"
 pm2 ls
+echo "Port in use by app:"
+sudo lsof -i:3000

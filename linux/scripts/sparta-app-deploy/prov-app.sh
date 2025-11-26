@@ -74,7 +74,7 @@ echo
 echo "Installing PM2..."
 sudo npm install -g pm2
 echo "Starting app using PM2..."
-pm2 start app.js --name "sparta-app" --update-env
+pm2 start app.js --name "sparta-app" --update-env || pm2 restart sparta-app --update-env
 pm2 save
 pm2 startup systemd -u $USER --hp $HOME
 echo

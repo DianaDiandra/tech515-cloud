@@ -49,7 +49,7 @@ echo "Done!"
 echo
 
 # Set environment variable for your DB
-export DB_HOST=mongodb://172.31.50.48:27017/posts
+export DB_HOST=mongodb://172.31.50.48/posts
 
 # Set fixed application directory for user-data execution
 APP_BASE_DIR="/opt/tech515-sparta-app"

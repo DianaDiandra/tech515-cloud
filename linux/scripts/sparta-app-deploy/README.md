@@ -22,7 +22,7 @@
 What is acting as the reverse proxy?
 * Nginx
 
-Main reason we are using it?
+Main reason we are using reverse proxy?
 * User experience - URL rewritting so removes the need to put port 3000 in the URL
 * Simplify autoscaling later
 
@@ -39,9 +39,14 @@ Some tipical Benefits:
 * centralised authentication
 
 ## Manual configuration of rev proxy
-
+sudo nano /etc/nginx/sites-available/default
+** add proxy_pass http://localhost:3000
+** try_files \$uri \$uri/ =404
 ## Setup reverse proxy
 
 # Automate deploy with Bash script
+sudo grep -q "proxy_pass http://localhost:3000;" /etc/nginx/sites-available/default \
+|| sudo sed -i 's@try_files \$uri \$uri/ =404;@proxy_pass http://localhost:3000;\
+include /etc/nginx/proxy_params;@' /etc/nginx/sites-available/default
 
 [Link to prov-app Bash script](scripts/prov-app.sh)

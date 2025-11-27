@@ -51,18 +51,17 @@ echo
 # Set environment variable for your DB
 export DB_HOST=mongodb://172.31.59.142/posts
 
-# Set fixed application directory for user-data execution
+# Set fixed application directory
 APP_BASE_DIR="/opt/tech515-sparta-app"
+APP_DIR="$APP_BASE_DIR/nodejs20-sparta-test-app/app"
 
-echo "Removing old repo and cloning fresh copy..."
+# Remove any old copy and clone fresh
 rm -rf "$APP_BASE_DIR"
 git clone https://github.com/DianaDiandra/tech515-sparta-app.git "$APP_BASE_DIR"
-echo "Done!"
-echo
+echo "Repo cloned to $APP_BASE_DIR"
 
-# Move to app directory
-APP_DIR="$APP_BASE_DIR/nodejs20-sparta-test-app/app"
-cd "$APP_DIR"
+# Move to Node.js app folder
+cd "$APP_DIR" 
 
 # Install npm dependencies (runs seed.js via postinstall)
 echo "Install npm dependencies..."

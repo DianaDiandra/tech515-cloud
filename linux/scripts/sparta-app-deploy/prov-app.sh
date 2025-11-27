@@ -61,7 +61,7 @@ git clone https://github.com/DianaDiandra/tech515-sparta-app.git "$APP_BASE_DIR"
 echo "Repo cloned to $APP_BASE_DIR"
 
 # Move to Node.js app folder
-cd "$APP_DIR" 
+cd "$APP_DIR"
 
 # Install npm dependencies (runs seed.js via postinstall)
 echo "Install npm dependencies..."
@@ -75,12 +75,7 @@ sudo npm install -g pm2
 echo "Starting app using PM2..."
 pm2 start app.js --name "sparta-app" --update-env || pm2 restart sparta-app --update-env
 pm2 save
-pm2 startup systemd -u $USER --hp $HOME
-echo
-echo "Done!"
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $USER --hp $HOME
 
-# Show PM2 processes and port in use
-echo "PM2 processes:"
+# Show PM2 status
 pm2 ls
-echo "Port in use by app:"
-sudo lsof -i:3000

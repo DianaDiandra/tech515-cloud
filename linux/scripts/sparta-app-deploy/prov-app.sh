@@ -51,14 +51,16 @@ echo
 # Set environment variable for your DB
 export DB_HOST=mongodb://172.31.59.142/posts
 
-# Set fixed application directory
+# Set fixed application base directory
 APP_BASE_DIR="/opt/tech515-sparta-app"
-APP_DIR="$APP_BASE_DIR/nodejs20-sparta-test-app/app"
 
 # Remove any old copy and clone fresh
 rm -rf "$APP_BASE_DIR"
 git clone https://github.com/DianaDiandra/tech515-sparta-app.git "$APP_BASE_DIR"
 echo "Repo cloned to $APP_BASE_DIR"
+
+# Set the Node.js app directory (after clone)
+APP_DIR="$APP_BASE_DIR/nodejs20-sparta-test-app/app"
 
 # Move to Node.js app folder
 cd "$APP_DIR"

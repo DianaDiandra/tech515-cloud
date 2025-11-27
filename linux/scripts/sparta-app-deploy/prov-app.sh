@@ -49,7 +49,7 @@ echo "Done!"
 echo
 
 # Set environment variable for your DB
-export DB_HOST=mongodb://172.31.59.142/posts
+export DB_HOST=mongodb://172.31.54.168/posts
 
 rm -rf repo
 git clone https://github.com/DianaDiandra/tech515-sparta-app.git repo

@@ -48,8 +48,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt install nodejs -y
 echo "Done!"
 echo
 
-# Set environment variable for your DB
-export DB_HOST=mongodb://172.31.54.168/posts
+# Set environment variable for your DB on localhost
+export DB_HOST="mongodb://127.0.0.1:27017/posts"
 
 rm -rf repo
 git clone https://github.com/DianaDiandra/tech515-sparta-app.git repo

@@ -50,3 +50,14 @@ sudo grep -q "proxy_pass http://localhost:3000;" /etc/nginx/sites-available/defa
 include /etc/nginx/proxy_params;@' /etc/nginx/sites-available/default
 
 [Link to prov-app Bash script](scripts/prov-app.sh)
+
+## Automate deployment with user data
+
+## Overview of the automation levels
+
+### What to expect launching the app vm with user data
+
+1. An error
+2. Nginx default page
+3. When reverse proxy is doing it's job (sending the user to port 3000) - Bad Gateway error
+4. App display

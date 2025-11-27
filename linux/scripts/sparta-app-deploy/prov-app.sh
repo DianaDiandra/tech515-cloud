@@ -69,8 +69,6 @@ echo "Starting app using PM2..."
 
 pm2 start app.js --name sparta-app
 pm2 save
-sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $USER --hp $HOME
-
 
 # Show PM2 status
 pm2 ls

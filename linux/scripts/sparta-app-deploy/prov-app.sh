@@ -64,10 +64,14 @@ echo
 # Run app in background using PM2
 echo "Installing PM2..."
 sudo npm install -g pm2
+
 echo "Starting app using PM2..."
-pm2 start app.js --name "sparta-app" --update-env || pm2 restart sparta-app --update-env
+cd /home/ubuntu/repo/app
+
+pm2 start app.js --name sparta-app
 pm2 save
 sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $USER --hp $HOME
+
 
 # Show PM2 status
 pm2 ls

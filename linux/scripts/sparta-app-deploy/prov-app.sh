@@ -53,7 +53,7 @@ export DB_HOST=mongodb://172.31.59.142/posts
 
 rm -rf repo
 git clone https://github.com/DianaDiandra/tech515-sparta-app.git repo
-cd repo/app
+cd repo/nodejs20-sparta-test-app/app
 
 # Install npm dependencies (runs seed.js via postinstall)
 echo "Install npm dependencies..."
@@ -66,7 +66,6 @@ echo "Installing PM2..."
 sudo npm install -g pm2
 
 echo "Starting app using PM2..."
-cd /home/ubuntu/repo/app
 
 pm2 start app.js --name sparta-app
 pm2 save

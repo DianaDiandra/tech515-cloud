@@ -61,13 +61,15 @@ npm install
 echo "Done!"
 echo
 
-# Run app in background using PM2
-echo "Installing PM2..."
+# Install pm2 (it should already be installed in your AMI)
 sudo npm install -g pm2
 
-echo "Starting app using PM2..."
+echo "Stopping all existing PM2 processes..."
+pm2 stop all
 
+echo "Starting app using PM2..."
 pm2 start app.js --name sparta-app
+
 pm2 save
 
 # Show PM2 status
